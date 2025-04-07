@@ -3,15 +3,26 @@ import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { faEdit } from "@fortawesome/free-regular-svg-icons";
 
-interface Props{}
+import { Product } from "my-types";
+import { useState, useEffect } from "react";
+import { getAllProducts } from "../api/ProductAPI";
 
+interface Props {}
 
-const ProductPage = (props: Props) => {
+const ProductPage = (_props: Props) => {
+  // COMPONENT STATE
 
-return (
+  const [products, setProducts] = useState<Product[]>([]);
 
-<>
-<nav className="panel">
+  // COMPONENT EVENTS
+
+  useEffect(() => {
+    getAllProducts().then((data: any) => setProducts(data));
+  }, [products]);
+
+  return (
+    <>
+      <nav className="panel">
         <p className="panel-heading">All Products</p>
 
         <div className="panel-block">
@@ -117,54 +128,55 @@ return (
             </tfoot>
 
             <tbody>
-              <tr>
-                <th>1</th>
+              {products.map((product) => {
+                return (
+                  <tr key={product.id}>
+                    <th>{product.id}</th>
 
-                <td>
-                  <FontAwesomeIcon icon={faImage} />
-                </td>
+                    <td>
+                      <FontAwesomeIcon icon={faImage} />
+                    </td>
 
-                <td>
-                  <a className="button is-ghost p-0">Title</a>
-                </td>
+                    <td>
+                      <a className="button is-ghost p-0">{product.title}</a>
+                    </td>
 
-                <td>Some description</td>
+                    <td>{product.description}</td>
 
-                <td>12.34</td>
+                    <td>{product.price}</td>
 
-                <td>3.4</td>
+                    <td>{product.discountPercentage}</td>
 
-                <td>5</td>
+                    <td>{product.rating}</td>
 
-                <td>36</td>
+                    <td>{product.stock}</td>
 
-                <td>
-                  <button
-                    type="button"
-                    onClick={() => confirm("Save the changes?")}
-                  >
-                    <FontAwesomeIcon icon={faEdit} />
-                  </button>
-                </td>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => confirm("Save the changes?")}
+                      >
+                        <FontAwesomeIcon icon={faEdit} />
+                      </button>
+                    </td>
 
-                <td>
-                  <button
-                    type="button"
-                    onClick={() => confirm("Delete the product?")}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </button>
-                </td>
-              </tr>
+                    <td>
+                      <button
+                        type="button"
+                        onClick={() => confirm("Delete the product?")}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
       </nav>
-</>
-
-);
-
-}
-
+    </>
+  );
+};
 
 export default ProductPage;
