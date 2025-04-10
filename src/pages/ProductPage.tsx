@@ -18,7 +18,7 @@ const ProductPage = (_props: Props) => {
 
   useEffect(() => {
     getAllProducts().then((data: any) => setProducts(data));
-  }, [products]);
+  }, []);
 
   return (
     <>
